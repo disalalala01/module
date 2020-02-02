@@ -28,6 +28,24 @@ class HospitalPatient(models.Model):
                 else:
                     rec.type = 'major'
 
+    @api.multi
+    def open_patient_appointments(self):
+        return {
+            'name': _('Appointments'),
+            'domain': [('patient_id', '=', self.id)],
+            'view_type': 'form',
+            'res_model': 'hospital.appointment',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+        }
+
+    def get_appointment_count(self):
+        count = self.env['hospital.appointment'].search_count([('patient_id', '=', self.id)])
+        self.appointments_count = count
+
+
+
     patient_name = fields.Char(string='Name', required = True)
     patient_age = fields.Integer('Age', track_visibility="always") #kind of log, tracks changes in this field and shows it in form window
     notes = fields.Text(string='Notes')
@@ -42,6 +60,7 @@ class HospitalPatient(models.Model):
         ('minor', 'Minor'),
     ], default='minor', compute='set_type')
     name_seq = fields.Char(string='Patient ID', required=True, copy=False, readonly=True, index=True, default=lambda self: _('New'))
+    appointments_count = fields.Integer(string='Appointment', compute='get_appointment_count')
 
     @api.model
     def create(self, vals):

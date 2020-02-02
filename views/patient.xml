@@ -51,8 +51,14 @@
         <field name="name">hospital.patient.form</field>
         <field name="model">hospital.patient</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="Patients">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="open_patient_appointments"
+                                type="object" class="oe_stat_button" icon="fa-calendar">
+                            <field name="appointments_count" string="Appointments" widget="statinfo"/>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name_seq" readonly="1"/>
