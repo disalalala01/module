@@ -11,14 +11,19 @@
     'author': 'Nartay',
     'website': 'nartay',
     'depends': [
+
         "mail",
-        "sale"
+        "sale",
+
     ],
     'demo': [],
     'data': [
+
         'security/ir.model.access.csv',
         'views/patient.xml',
-        'data/sequence.xml'
+        'data/sequence.xml',
+        'views/appointment.xml',
+
     ],
     'installable': True,
     'application': True,

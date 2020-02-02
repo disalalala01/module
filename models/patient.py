@@ -28,7 +28,7 @@ class HospitalPatient(models.Model):
                     rec.type = 'major'
 
     patient_name = fields.Char(string='Name', required = True)
-    patient_age = fields.Integer('Age', track_visibility = "always") #kind of log, tracks changes in this field and shows it in form window
+    patient_age = fields.Integer('Age', track_visibility="always") #kind of log, tracks changes in this field and shows it in form window
     notes = fields.Text(string='Notes')
     image = fields.Binary(string='Image')
     name = fields.Char(string='Surname')
