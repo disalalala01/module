@@ -44,6 +44,12 @@ class HospitalPatient(models.Model):
         count = self.env['hospital.appointment'].search_count([('patient_id', '=', self.id)])
         self.appointments_count = count
 
+    @api.model
+    def create(self, vals):
+        if vals.get('name_seq', _('New')):
+            vals['name_seq'] = self.env['ir.sequence'].next_by_code('hospital.patient.sequence')
+        result = super(HospitalPatient, self).create(vals)
+        return result
 
 
     patient_name = fields.Char(string='Name', required = True)
@@ -62,9 +68,9 @@ class HospitalPatient(models.Model):
     name_seq = fields.Char(string='Patient ID', required=True, copy=False, readonly=True, index=True, default=lambda self: _('New'))
     appointments_count = fields.Integer(string='Appointment', compute='get_appointment_count')
 
-    @api.model
-    def create(self, vals):
-        if vals.get('name_seq', _('New')):
-            vals['name_seq'] = self.env['ir.sequence'].next_by_code('hospital.patient.sequence')
-        result = super(HospitalPatient, self).create(vals)
-        return result
+    state_t = fields.Selection([
+        ('draft', 'Draft'),
+        ('confirm', 'Confirm'),
+        ('done', 'Done'),
+        ('cancel', 'Cancelled')
+    ], string='Status', default='draft', readonly=True)

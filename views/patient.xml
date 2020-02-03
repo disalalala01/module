@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
+
+    <record model="ir.actions.act_window" id="open_patient_appointments">
+        <field name="name">Appointments</field>
+        <field name="res_model">hospital.appointment</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('patient_id','=',active_id)]</field>
+        <field name="context">{}</field>
+    </record>
+
      <record id="sale_order_inherit" model="ir.ui.view">
         <field name="name">sale.order.inherit</field>
         <field name="model">sale.order</field>
@@ -52,12 +61,21 @@
         <field name="model">hospital.patient</field>
         <field name="arch" type="xml">
             <form string="Patients">
+                <header>
+                    <field name="state_t" widget="statusbar" statusbar_visible="draft,confirm,done"/>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="open_patient_appointments"
                                 type="object" class="oe_stat_button" icon="fa-calendar">
                             <field name="appointments_count" string="Appointments" widget="statinfo"/>
                         </button>
+
+                        <button name="%(open_patient_appointments)d"
+                                type="action" class="oe_stat_button" icon="fa-uds">
+                            <field name="appointments_count" string="Appointments" widget="statinfo"/>
+                        </button>
+
                     </div>
                     <div class="oe_title">
                         <h1>
